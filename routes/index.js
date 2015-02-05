@@ -18,11 +18,13 @@ router.get('/', function(req, res) {
 });
 
 router.get('/recommendations', function(req, res) {
-  Song.find(function(err, songs) {
+  Song.find()
+      .limit(500)
+      .exec(function(err, songs) {
     if (err) { return next(err); }
 
-    songs = shuffle(songs.splice(0,10));
-    res.json(songs);
+    songs = shuffle(songs);
+    res.json(songs.splice(0,10));
   })
 });
 
