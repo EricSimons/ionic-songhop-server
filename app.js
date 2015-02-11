@@ -12,9 +12,15 @@ require('./models/User');
 
 var songs = require('./seeds/songs.json');
 
+// seed the server if necessary
 mongoose.connection.once('open', function() {
   var s = mongoose.connection.db.collection('songs');
-  s.remove({}, function(err) {
+  s.count(function(err, val) {
+    if(val > 0) {
+      return;
+    }
+
+    console.log('Seeding database...')
     s.insert(songs, function(err, res) {
       if(err) { return console.log(err); }
     })
