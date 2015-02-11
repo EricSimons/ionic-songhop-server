@@ -10,14 +10,14 @@ var Song = mongoose.model('Song');
 function shuffle(o){
   for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
   return o;
-};
+}
 
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/recommendations', function(req, res) {
+router.get('/recommendations', function(req, res, next) {
   Song.find()
       .limit(500)
       .exec(function(err, songs) {
@@ -28,7 +28,7 @@ router.get('/recommendations', function(req, res) {
   })
 });
 
-router.get('/favorites', function(req, res) {
+router.get('/favorites', function(req, res, next) {
   User.findById(req.query.session_id)
   .populate('favorites')
   .exec(function(err, user) {
