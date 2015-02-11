@@ -10,6 +10,18 @@ mongoose.connect('mongodb://localhost/ioniccourse');
 require('./models/Song');
 require('./models/User');
 
+var songs = require('./seeds/songs.json');
+
+mongoose.connection.once('open', function() {
+  var s = mongoose.connection.db.collection('songs');
+  s.remove({}, function(err) {
+    s.insert(songs, function(err, res) {
+      if(err) { return console.log(err); }
+    })
+  })
+})
+
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
