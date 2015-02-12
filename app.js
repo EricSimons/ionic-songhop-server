@@ -6,7 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/ioniccourse');
+if (process.env.NODE_ENV == 'production') {
+    mongoose.connect(process.env.MONGOLAB_URI);
+} else {
+    mongoose.connect('mongodb://localhost/ioniccourse');
+}
+
 require('./models/Song');
 require('./models/User');
 
